@@ -1,26 +1,33 @@
 package com.iste610.SongLibrary.model;
 
-import java.util.List;
-
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+
+import java.util.List;
 
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 @Document(collection = "songs")
 public class Song
 {
     @Id
     private String id;
-    private String artist_name;
-    private String artist_url;
-    private String song_name;
+    @Field("ARTIST_NAME")
+    private String artistName;
+    @Field("ARTIST_URL")
+    private String artistUrl;
+    @Field("SONG_NAME")
+    private String songName;
+    @Field("LYRICS")
     private String lyrics;
+    @Field("COMMENTS")
     private List<Comment> comments;
 }
 

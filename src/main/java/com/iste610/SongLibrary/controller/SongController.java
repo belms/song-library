@@ -1,34 +1,19 @@
 package com.iste610.SongLibrary.controller;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.bson.conversions.Bson;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-
 import com.iste610.SongLibrary.model.Comment;
+import com.iste610.SongLibrary.model.Search;
 import com.iste610.SongLibrary.model.Song;
 import com.iste610.SongLibrary.repository.SongRepository;
-import com.mongodb.client.model.Filters;
-
-import static com.mongodb.client.model.Filters.regex;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class SongController
 {
+    private final SongRepository repository;
 
-    private SongRepository repository;
-
-    public SongController(SongRepository repository)
-    {
+    public SongController(SongRepository repository) {
         this.repository = repository;
     }
 
@@ -36,6 +21,7 @@ public class SongController
     public String getAllSongs(Model model)
     {
         model.addAttribute("songs", repository.findAll());
+        System.out.println("Song 1 "+ repository.findAll().get(0).getSongName());
         return "index";
     }
 
@@ -67,27 +53,31 @@ public class SongController
     @GetMapping("/songs/{title}")
     public String getSongByTitle(Model model, @PathVariable String title)
     {
-        model.addAttribute("songByTitle", repository.findSongsBySong_name(title));
+        model.addAttribute("songByTitle", repository.findSongsBySongNameContains(title));
         return "index";
     }
 
-    @GetMapping("/songs/{search}")
-    public String getSongByLyrics(Model model, @PathVariable String search)
-    {
-        List<String> searchWords = Arrays.asList(search.split(" "));
-        //Filter koji ce search-at da ima bilo koja rijec iz search string-a u bilo kojem redosljedu(ja mislim :))
-        Bson compositeFilter = Filters
-            .or(searchWords.stream().map(word -> regex("lyrics", "\\b" + word + "\\b")).collect(Collectors.toList()));
-
-        //TODO: Ne znam kako ovaj regex/filter primjeniti s ovim mongo repository
-
+    /**
+     * Search
+     */
+    @RequestMapping(value = "songs/search", method = RequestMethod.GET)
+    public String searchedSongs(Model model) {
+        model.addAttribute("searchForm", new Search());
+        return "index";
+    }
+    /**
+     * Controller shows searched articles
+     */
+    @RequestMapping(value = "songs/search", method = RequestMethod.POST)
+    public String searchedSongs(Search searchForm, Model model) {
+        model.addAttribute("songs", repository.findSongByLyricsContains(searchForm.getLyrics()));
         return "index";
     }
 
     @GetMapping("/songs/{artist}")
     public String getSongByArtist(Model model, @PathVariable String artist)
     {
-        model.addAttribute("songsByArtist", repository.findSongsByArtist_name(artist));
+        model.addAttribute("songsByArtist", repository.findSongsByArtistNameContains(artist));
         return "index";
     }
 
