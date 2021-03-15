@@ -1,0 +1,27 @@
+<html th:with="currentPage='new-song'" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Songs</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<form method="POST" style="display: inline-block;"
+      th:action="@{/add-comment/{id}(id=${comment.id})}"
+      th:object="${comment}">
+    <div class="input-group">
+        <h2>Add new comment for the song</h2>
+        <label>Song: </label><label th:text="*{songName}"></label><br>
+        <label>Artist: </label><label th:text="*{artistName}"></label><br>
+        <label>Comment</label><br>
+        <input class="form-control" placeholder="comment..." th:field="*{text}"
+               type="text"/><br>
+        <label>By user</label><br>
+        <input class="form-control" placeholder="your name..." th:field="*{user}"
+               type="text"/><br>
+        <button class="btn" type="submit"><i class="material-icons">Add Comment</i>
+        </button>
+    </div>
+</form>
+
+<a th:href="@{/songs}">Go back</a>
+</body>
+</html>

@@ -18,15 +18,11 @@
         <label>Lyrics</label><br>
         <input class="form-control" placeholder="lyrics..." th:field="*{lyrics}"
                type="text"/><br>
-        <label>Comment</label><br>
-        <input class="form-control" placeholder="comment..." th:field="*{comment}"
-               type="text"/><br>
-        <label>By user</label><br>
-        <input class="form-control" placeholder="your name..." th:field="*{user}"
-               type="text"/><br>
         <button class="btn" type="submit"><i class="material-icons">Add Song</i>
         </button>
     </div>
 </form>
+
+<a th:href="@{/songs}">Go back</a>
 </body>
 </html>

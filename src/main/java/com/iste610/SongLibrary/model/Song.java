@@ -1,5 +1,6 @@
 package com.iste610.SongLibrary.model;
 
+import com.mongodb.BasicDBObject;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,6 +27,6 @@ public class Song
     @Field("LYRICS")
     private String lyrics;
     @Field("COMMENTS")
-    private List<Comment> comments;
+    private List<BasicDBObject> comments;
 }
 
