@@ -21,8 +21,6 @@ public class Song
     private String id;
     @Field("ARTIST_NAME")
     private String artistName;
-    @Field("ARTIST_URL")
-    private String artistUrl;
     @Field("SONG_NAME")
     private String songName;
     @Field("LYRICS")

@@ -9,6 +9,10 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Search {
-    private String lyrics, artistName, songName;
+public class SongForm {
+    private String artistName;
+    private String songName;
+    private String lyrics;
+    private String comment;
+    private String user;
 }

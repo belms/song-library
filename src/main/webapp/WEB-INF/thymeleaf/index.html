@@ -10,30 +10,29 @@
       th:object="${search}">
     <div class="input-group">
         <h2>Search songs by:</h2>
-        <label>Lyrics</label>
+        <label>Lyrics</label><br>
         <input class="form-control" placeholder="Search by lyrics..." th:field="*{lyrics}"
-               type="text"/>
-        <label>or Artist</label>
+               type="text"/><br>
+        <label>or Artist</label><br>
         <input class="form-control" placeholder="Search by artist..." th:field="*{artistName}"
-               type="text"/>
-        <label>or Song</label>
+               type="text"/><br>
+        <label>or Song</label><br>
         <input class="form-control" placeholder="Search by song name..." th:field="*{songName}"
-               type="text"/>
+               type="text"/><br>
         <button class="btn" type="submit"><i class="material-icons">search</i>
         </button>
     </div>
-
 </form>
-
+<p><a th:href="@{/add-song}">Add new song</a></p>
+</br>
 <div th:switch="${songs}">
     <h2 th:case="null">No songs yet!</h2>
     <div th:case="*">
-        <h2>Issues</h2>
+        <h2>Songs</h2>
         <table>
             <thead>
             <tr>
                 <th>Artist name</th>
-                <th>Artist URL</th>
                 <th>Name of the song</th>
                 <th>Lyrics</th>
                 <th>Comments</th>
@@ -42,17 +41,14 @@
             <tbody>
             <tr th:each="song : ${songs}">
                 <td th:text="${song.artistName}"></td>
-                <td th:text="${song.artistUrl}"></td>
                 <td th:text="${song.songName}"></td>
                 <td th:text="${song.lyrics}"></td>
                 <td th:text="${song.comments}"></td>
-                <td><a th:href="@{/edit/{id}(id=${song.id})}">Edit</a></td>
-                <td><a th:href="@{/delete/{id}(id=${song.id})}">Delete</a></td>
             </tr>
             </tbody>
         </table>
     </div>
-    <p><a href="/add">Add a new song</a></p>
+
 </div>
 </body>
 </html>
