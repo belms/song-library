@@ -1,24 +1,29 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html th:with="currentPage='index'" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Songs</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 </head>
 <body>
 
-<!--<form method="POST" style="display: inline-block;"
-      th:action="@{/songs/search}"
+<form method="POST" style="display: inline-block;"
+      th:action="@{/songs}"
       th:object="${search}">
     <div class="input-group">
-        <span class="input-group-btn">
+        <h2>Search songs by:</h2>
+        <label>Lyrics</label>
+        <input class="form-control" placeholder="Search by lyrics..." th:field="*{lyrics}"
+               type="text"/>
+        <label>or Artist</label>
+        <input class="form-control" placeholder="Search by artist..." th:field="*{artistName}"
+               type="text"/>
+        <label>or Song</label>
+        <input class="form-control" placeholder="Search by song name..." th:field="*{songName}"
+               type="text"/>
         <button class="btn" type="submit"><i class="material-icons">search</i>
         </button>
-        </span>
-        <input class="form-control" placeholder="Search by lyrics..." th:field="*${lyrics}"
-               type="text"/>
     </div>
 
-</form>-->
+</form>
 
 <div th:switch="${songs}">
     <h2 th:case="null">No songs yet!</h2>

@@ -6,7 +6,10 @@ import com.iste610.SongLibrary.model.Song;
 import com.iste610.SongLibrary.repository.SongRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Controller
 public class SongController
@@ -17,16 +20,8 @@ public class SongController
         this.repository = repository;
     }
 
-    @GetMapping("/songs")
-    public String getAllSongs(Model model)
-    {
-        model.addAttribute("songs", repository.findAll());
-        System.out.println("Song 1 "+ repository.findAll().get(0).getSongName());
-        return "index";
-    }
-
-    @PostMapping("/songs")
-    @PutMapping("/songs")
+    @PostMapping("/add-song")
+    @PutMapping("/add-song")
     public String addOrUpdateSong(Model model, @RequestBody Song song)
     {
         repository.save(song);
@@ -60,24 +55,27 @@ public class SongController
     /**
      * Search
      */
-    @RequestMapping(value = "songs/search", method = RequestMethod.GET)
+    @RequestMapping(value = "/songs", method = RequestMethod.GET)
     public String searchedSongs(Model model) {
-        model.addAttribute("searchForm", new Search());
+       model.addAttribute("search", new Search());
         return "index";
     }
     /**
-     * Controller shows searched articles
+     * Controller shows searched songs
      */
-    @RequestMapping(value = "songs/search", method = RequestMethod.POST)
-    public String searchedSongs(Search searchForm, Model model) {
-        model.addAttribute("songs", repository.findSongByLyricsContains(searchForm.getLyrics()));
-        return "index";
-    }
-
-    @GetMapping("/songs/{artist}")
-    public String getSongByArtist(Model model, @PathVariable String artist)
-    {
-        model.addAttribute("songsByArtist", repository.findSongsByArtistNameContains(artist));
+    @RequestMapping(value = "/songs", method = RequestMethod.POST)
+    public String searchedSongs(@Valid Search search, Model model, BindingResult result) {
+        if (result.hasErrors()) {
+            model.addAttribute("search", search);
+            return "index";
+        }
+        if (!search.getLyrics().isEmpty() || search.getLyrics() != null) {
+            model.addAttribute("songs", repository.findSongByLyricsContains(search.getLyrics()));
+        } else if (!search.getArtistName().isEmpty() || search.getArtistName() != null){
+            model.addAttribute("songs", repository.findSongsByArtistNameContains(search.getArtistName()));
+        } else {
+            model.addAttribute("songs", repository.findSongsBySongNameContains(search.getSongName()));
+        }
         return "index";
     }
 
