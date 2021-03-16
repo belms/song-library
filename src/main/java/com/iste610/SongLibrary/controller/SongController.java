@@ -5,12 +5,13 @@ import com.iste610.SongLibrary.model.Search;
 import com.iste610.SongLibrary.model.Song;
 import com.iste610.SongLibrary.model.SongForm;
 import com.iste610.SongLibrary.repository.SongRepository;
-import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -69,14 +70,11 @@ public class SongController {
             return "index";
         }
         if (!search.getLyrics().isEmpty()) {
-            System.out.println("trazimo po lyrics: " + search.getLyrics());
             model.addAttribute("songs", repository.findSongByLyricsContains(search.getLyrics()));
         } else if (!search.getArtistName().isEmpty()) {
-            System.out.println("trazimo po artistname: " + search.getArtistName());
             model.addAttribute("songs", repository.findSongsByArtistNameContains(search.getArtistName()));
         } else if (!search.getSongName().isEmpty()) {
             model.addAttribute("songs", repository.findSongsBySongNameContains(search.getSongName()));
-            System.out.println("trazimo po songname: " + search.getSongName());
         } else model.addAttribute("songs",new ArrayList<>());
         return "index";
     }
