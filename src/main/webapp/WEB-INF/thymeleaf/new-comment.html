@@ -2,26 +2,94 @@
 <head>
     <title>Songs</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style>
+        /* Remove the navbar's default margin-bottom and rounded borders */
+        .navbar {
+            margin-bottom: 0;
+            border-radius: 0;
+        }
+        /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+        .row.content {
+            height: 450px
+        }
+
+        /* Set gray background color and 100% height */
+        .sidenav {
+            padding-top: 20px;
+            background-color: #f1f1f1;
+            height: 100%;
+        }
+
+        /* Set black background color, white text and some padding */
+        footer {
+            background-color: #555;
+            color: white;
+            padding: 15px;
+        }
+
+        /* On small screens, set height to 'auto' for sidenav and grid */
+        @media screen and (max-width: 767px) {
+            .sidenav {
+                height: auto;
+                padding: 15px;
+            }
+
+            .row.content {
+                height: auto;
+            }
+        }
+    </style>
 </head>
 <body>
-<form method="POST" style="display: inline-block;"
-      th:action="@{/add-comment/{id}(id=${comment.id})}"
-      th:object="${comment}">
-    <div class="input-group">
-        <h2>Add new comment for the song</h2>
-        <label>Song: </label><label th:text="*{songName}"></label><br>
-        <label>Artist: </label><label th:text="*{artistName}"></label><br>
-        <label>Comment</label><br>
-        <input class="form-control" placeholder="comment..." th:field="*{text}"
-               type="text"/><br>
-        <label>By user</label><br>
-        <input class="form-control" placeholder="your name..." th:field="*{user}"
-               type="text"/><br>
-        <button class="btn" type="submit"><i class="material-icons">Add Comment</i>
-        </button>
-    </div>
-</form>
 
-<a th:href="@{/songs}">Go back</a>
+
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">SongLibrary</a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav">
+                <li class="active"><a th:href="@{/songs}">Home</a></li>
+                <li><a th:href="@{/add-song}">Add Song</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#"><span class="glyphicon glyphicon-log-in"></span></a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid text-center">
+    <div class="row content">
+        <form method="POST" style="display: inline-block;"
+              th:action="@{/add-comment/{id}(id=${comment.id})}"
+              th:object="${comment}">
+            <div class="input-group">
+                <h2>Add a coment for the song </h2><br>
+                <h2 th:text="*{songName}"></h2> <h2> by </h2>
+                <h2 th:text="*{artistName}"></h2> <br>
+                <label>Comment</label><br>
+                <input class="form-control" placeholder="comment..." th:field="*{text}"
+                       type="text"/><br>
+                <label>By user</label><br>
+                <input class="form-control" placeholder="your name..." th:field="*{user}"
+                       type="text"/><br>
+                <button class="btn" type="submit"><i class="material-icons">Add Comment</i>
+                </button>
+            </div>
+        </form>
+
+        <a th:href="@{/songs}">Go back</a>
+    </div>
+</div>
 </body>
 </html>

@@ -2,54 +2,125 @@
 <head>
     <title>Songs</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style>
+        /* Remove the navbar's default margin-bottom and rounded borders */
+        .navbar {
+            margin-bottom: 0;
+            border-radius: 0;
+        }
+
+        .table {
+            width: 50%;
+            display: inline-block;
+        }
+        /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+        .row.content {
+            height: 450px
+        }
+
+        /* Set gray background color and 100% height */
+        .sidenav {
+            padding-top: 20px;
+            background-color: #f1f1f1;
+            height: 100%;
+        }
+
+        /* Set black background color, white text and some padding */
+        footer {
+            background-color: #555;
+            color: white;
+            padding: 15px;
+        }
+
+        /* On small screens, set height to 'auto' for sidenav and grid */
+        @media screen and (max-width: 767px) {
+            .sidenav {
+                height: auto;
+                padding: 15px;
+            }
+
+            .row.content {
+                height: auto;
+            }
+        }
+    </style>
 </head>
 <body>
 
-<form method="POST" style="display: inline-block;"
-      th:action="@{/songs}"
-      th:object="${search}">
-    <div class="input-group">
-        <h2>Search songs by:</h2>
-        <label>Lyrics</label><br>
-        <input class="form-control" placeholder="Search by lyrics..." th:field="*{lyrics}"
-               type="text"/><br>
-        <label>or Artist</label><br>
-        <input class="form-control" placeholder="Search by artist..." th:field="*{artistName}"
-               type="text"/><br>
-        <label>or Song</label><br>
-        <input class="form-control" placeholder="Search by song name..." th:field="*{songName}"
-               type="text"/><br>
-        <button class="btn" type="submit"><i class="material-icons">search</i>
-        </button>
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">SongLibrary</a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav">
+                <li class="active"><a th:href="@{/songs}">Home</a></li>
+                <li><a th:href="@{/add-song}">Add Song</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#"><span class="glyphicon glyphicon-log-in"></span></a></li>
+            </ul>
+        </div>
     </div>
-</form>
-<p><a th:href="@{/add-song}">Add new song</a></p>
-</br>
-<div th:switch="${songs}">
-    <h2 th:case="null">No songs yet!</h2>
-    <div th:case="*">
-        <h2>Songs</h2>
-        <table>
-            <thead>
-            <tr>
-                <th>Artist name</th>
-                <th>Name of the song</th>
-                <th>Lyrics</th>
-                <th>Comments</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="song : ${songs}">
-                <td th:text="${song.artistName}"></td>
-                <td th:text="${song.songName}"></td>
-                <td th:text="${song.lyrics}"></td>
-                <td th:text="${song.comments}"></td>
-                <td><a th:href="@{/add-comment/{id}(id=${song.id})}">Add new comment</a></td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+</nav>
 
+<div class="container-fluid text-center">
+    <div class="row content">
+        <form method="POST" style="display: inline-block;"
+              th:action="@{/songs}"
+              th:object="${search}">
+            <div class="input-group">
+                <h2>Search songs by:</h2>
+                <label>Lyrics</label><br>
+                <input class="form-control" placeholder="Search by lyrics..." th:field="*{lyrics}"
+                       type="text"/><br>
+                <label>or Artist</label><br>
+                <input class="form-control" placeholder="Search by artist..." th:field="*{artistName}"
+                       type="text"/><br>
+                <label>or Song</label><br>
+                <input class="form-control" placeholder="Search by song name..." th:field="*{songName}"
+                       type="text"/><br>
+                <button class="btn" type="submit"><i class="material-icons">search</i>
+                </button>
+            </div>
+        </form>
+        <p><a th:href="@{/add-song}">Add new song</a></p>
+        </br>
+        <div th:switch="${songs}">
+            <h2 th:case="null">No songs yet!</h2>
+            <div th:case="*">
+                <h2>Songs</h2>
+                <table class="table">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Artist name</th>
+                        <th scope="col">Name of the song</th>
+                        <th scope="col">Lyrics</th>
+                        <th scope="col">Comments</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="song : ${songs}">
+                        <td th:text="${song.artistName}"></td>
+                        <td th:text="${song.songName}"></td>
+                        <td th:text="${song.lyrics}"></td>
+                        <td th:text="${song.comments}"></td>
+                        <td><a th:href="@{/add-comment/{id}(id=${song.id})}">Add new comment</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
 </div>
 </body>
 </html>
